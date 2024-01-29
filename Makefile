@@ -12,23 +12,6 @@ all: all-tess all-hunspell
 
 TESS_MODELS := frak2021 GT4HistOCR ONB Fraktur_5000000 german_print frk Fraktur
 
-get-tess: $(TESS_MODELS:%=%.traineddata)
-
-all-tess: $(foreach MODEL, $(TESS_MODELS), $(MODEL)_dta10.traineddata $(MODEL)_dta50.traineddata $(MODEL)_dta100.traineddata)
-
-%_dta10.traineddata: dta_lexdb_10.words
-%_dta50.traineddata: dta_lexdb_50.words
-%_dta100.traineddata: dta_lexdb_100.words
-%_dta10.traineddata %_dta50.traineddata %_dta100.traineddata: %.traineddata
-	cp $< $@
-	./combine_tessdata.sh $@ dta_lexdb_$(patsubst $*_dta%.traineddata,%,$@).words
-
-dta_lexdb_%.words: dta_lexdb.sqlite
-	./sql2wordlist.sh $< $@ $*
-
-dta_lexdb.sqlite:
-	wget -O $@ https://www.dwds.de/dwds_static/lexdb/dta/lexdb.sqlite
-
 GT4HistOCR.traineddata:
 	wget -O $@ https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/GT4HistOCR/tessdata_best/GT4HistOCR.traineddata
 
@@ -49,6 +32,28 @@ frk.traineddata:
 
 Fraktur.traineddata:
 	wget -O $@ https://github.com/tesseract-ocr/tessdata_fast/raw/main/script/Fraktur.traineddata
+
+get-tess: $(TESS_MODELS:%=%.traineddata)
+
+all-tess: $(foreach MODEL, $(TESS_MODELS), $(MODEL)_dta10.traineddata $(MODEL)_dta50.traineddata $(MODEL)_dta100.traineddata)
+
+%_dta10.traineddata: %.traineddata dta_lexdb_10.words
+	cp $< $@
+        ./combine_tessdata.sh $@ dta_lexdb_10.words
+
+%_dta50.traineddata: %.traineddata dta_lexdb_50.words
+        cp $< $@
+        ./combine_tessdata.sh $@ dta_lexdb_50.words
+
+%_dta100.traineddata: %.traineddata dta_lexdb_100.words
+	cp $< $@
+        ./combine_tessdata.sh $@ dta_lexdb_100.words
+
+dta_lexdb_%.words: dta_lexdb.sqlite
+	./sql2wordlist.sh $< $@ $*
+
+dta_lexdb.sqlite:
+	wget -O $@ https://www.dwds.de/dwds_static/lexdb/dta/lexdb.sqlite
 
 all-hunspell: de-dta.dic
 
