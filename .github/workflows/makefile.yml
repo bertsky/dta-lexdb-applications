@@ -12,21 +12,54 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-    - name: Remove unwanted to provide more disk space
-      # https://github.com/marketplace/actions/maximize-build-disk-space
-      # https://github.com/actions/runner-images/issues/2840
-      run: |
-        sudo rm -rf /usr/share/dotnet
-        sudo rm -rf /usr/local/lib/android
-        sudo rm -rf /opt/ghc
-        sudo rm -rf "/usr/local/share/boost"
-        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-
     - uses: actions/checkout@v3
 
     - name: Install dependencies
       run: make install
 
+    - name: Cache LexDB
+      id: cache-lexdb
+      uses: actions/cache@v4.0.0
+      with:
+        path: dta_lexdb.sqlite
+        key: lexdb-sql
+
+    - name: Get LexDB
+      if: steps.cache-lexdb.outputs.cache-hit != 'true'
+      run: make dta_lexdb.sqlite
+      
+    - name: Cache word lists
+      id: cache-lists
+      uses: actions/cache@v4.0.0
+      with:
+        path: |
+          dta_lexdb_10.words
+          dta_lexdb_50.words
+          dta_lexdb_100.words
+        key: lexdb-words
+
+    - name: Extract word lists
+      if: steps.cache-lists.outputs.cache-hit != 'true'
+      run: make dta_lexdb_10.words dta_lexdb_50.words dta_lexdb_100.words
+
+    - name: Cache models
+      id: cache-models
+      uses: actions/cache@v4.0.0
+      with:
+        path: |
+          frak2021.traineddata
+          GT4HistOCR.traineddata
+          ONB.traineddata
+          Fraktur_5000000.traineddata
+          german_print.traineddata
+          frk.traineddata
+          Fraktur.traineddata
+        key: lexdb-models
+
+    - name: Download models
+      if: steps.cache-models.outputs.cache-hit != 'true'
+      run: make get-tess
+      
     - name: Create Tesseract models
       run: make all-tess
       
