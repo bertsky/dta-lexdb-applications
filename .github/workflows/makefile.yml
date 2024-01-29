@@ -1,4 +1,4 @@
-name: Makefile CI
+name: CD
 
 on:
   push:
@@ -83,9 +83,7 @@ jobs:
     - name: Upload assets
       uses: csexton/release-asset-action@v2
       with:
-        pattern: |
-          *_dta*.traineddata
-          de-dta.*
+        pattern: "{*_dta*.traineddata,de-dta.*}"
         github-token: ${{ secrets.GITHUB_TOKEN }}
         release-url: ${{ steps.create_release.outputs.upload_url }}
   
