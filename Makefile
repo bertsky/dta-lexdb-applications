@@ -1,4 +1,4 @@
-.PHONY: install all all-tess all-hunspell clean tidy
+.PHONY: install all all-tess get-tess all-hunspell clean tidy
 .SECONDARY:
 .DELETE_ON_ERROR:
 
@@ -11,6 +11,8 @@ install:
 all: all-tess all-hunspell
 
 TESS_MODELS := frak2021 GT4HistOCR ONB Fraktur_5000000 german_print frk Fraktur
+
+get-tess: $(TESS_MODELS:%=%.traineddata)
 
 all-tess: $(foreach MODEL, $(TESS_MODELS), $(MODEL)_dta10.traineddata $(MODEL)_dta50.traineddata $(MODEL)_dta100.traineddata)
 
