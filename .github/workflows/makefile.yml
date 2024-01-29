@@ -66,7 +66,8 @@ jobs:
     - name: Create Hunspell dict
       run: make all-hunspell
       
-    - uses: maxmilton/action-create-release@v0
+    - name: Publish release
+      uses: maxmilton/action-create-release@v0
       with:
         files: |
           *_dta*.traineddata
