@@ -24,10 +24,10 @@ jobs:
       run: make all-hunspell
       
     - uses: maxmilton/action-create-release@v0
-        with:
-          files: |
-            *_dta*.traineddata
-            de-dta.*
-          git-tag: ${{ github.ref }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        files: |
+          *_dta*.traineddata
+          de-dta.*
+        git-tag: ${{ github.ref }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
   
