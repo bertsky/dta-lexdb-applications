@@ -39,15 +39,15 @@ all-tess: $(foreach MODEL, $(TESS_MODELS), $(MODEL)_dta10.traineddata $(MODEL)_d
 
 %_dta10.traineddata: %.traineddata dta_lexdb_10.words
 	cp $< $@
-        ./combine_tessdata.sh $@ dta_lexdb_10.words
+	./combine_tessdata.sh $@ dta_lexdb_10.words
 
 %_dta50.traineddata: %.traineddata dta_lexdb_50.words
-        cp $< $@
-        ./combine_tessdata.sh $@ dta_lexdb_50.words
+	cp $< $@
+	./combine_tessdata.sh $@ dta_lexdb_50.words
 
 %_dta100.traineddata: %.traineddata dta_lexdb_100.words
 	cp $< $@
-        ./combine_tessdata.sh $@ dta_lexdb_100.words
+	./combine_tessdata.sh $@ dta_lexdb_100.words
 
 dta_lexdb_%.words: dta_lexdb.sqlite
 	./sql2wordlist.sh $< $@ $*
