@@ -1,0 +1,55 @@
+SET UTF-8
+# visually similar in Fraktur
+KEY ec|rn|ij|ſf|xr|yh|yv|tl|VB|CE|IJ|RN|QD|AU|RK
+
+REP 48
+REP f ph
+REP ph f
+REP s ſ
+REP ſ s
+REP ß ss
+REP ss ß
+REP ß ſſ
+REP ſſ ß
+REP s ss
+REP ss s
+REP i ie
+REP ie i
+REP i ih
+REP ih i
+REP ee e
+REP o oh
+REP oh o
+REP a ah
+REP ah a
+REP e eh
+REP eh e
+REP ae ä
+REP oe ö
+REP ue ü
+REP ü uͤ
+REP uͤ ü
+REP ö oͤ
+REP oͤ ö
+REP ä aͤ
+REP aͤ ä
+REP Ü Uͤ
+REP Uͤ Ü
+REP Ö Oͤ
+REP Oͤ Ö
+REP Ä Aͤ
+REP Aͤ Ä
+REP Ae Ä
+REP Oe Ö
+REP Ue Ü
+REP d t
+REP t d
+REP th t
+REP t th
+REP r rh
+REP ch k
+REP k ch
+REP I J
+REP J I
+
+WORDCHARS ßſ-.

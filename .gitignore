@@ -1,0 +1,6 @@
+*~
+*.words
+*.traineddata
+*.sqlite
+*.lstm-unicharset
+*.lstm-word-dawg
