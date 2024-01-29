@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install dependencies
       run: make install
@@ -75,8 +75,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ github.sha }}
+        release_name: Release ${{ github.sha }}
         body: Auto generated release
         draft: true
         prerelease: false
@@ -84,8 +84,8 @@ jobs:
       uses: csexton/release-asset-action@v2
       with:
         pattern: |
-          "*_dta*.traineddata"
-          "de-dta.*"
+          *_dta*.traineddata
+          de-dta.*
         github-token: ${{ secrets.GITHUB_TOKEN }}
         release-url: ${{ steps.create_release.outputs.upload_url }}
   
