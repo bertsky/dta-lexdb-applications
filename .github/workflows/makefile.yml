@@ -21,6 +21,7 @@ jobs:
       id: cache-lexdb
       uses: actions/cache@v4.0.0
       with:
+        save-always: true
         path: dta_lexdb.sqlite
         key: lexdb-sql
 
@@ -32,6 +33,7 @@ jobs:
       id: cache-lists
       uses: actions/cache@v4.0.0
       with:
+        save-always: true
         path: |
           dta_lexdb_10.words
           dta_lexdb_50.words
@@ -46,6 +48,7 @@ jobs:
       id: cache-models
       uses: actions/cache@v4.0.0
       with:
+        save-always: true
         path: |
           frak2021.traineddata
           GT4HistOCR.traineddata
@@ -65,13 +68,24 @@ jobs:
       
     - name: Create Hunspell dict
       run: make all-hunspell
-      
-    - name: Publish release
-      uses: maxmilton/action-create-release@v0
+
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        files: |
-          *_dta*.traineddata
-          de-dta.*
-        git-tag: ${{ github.ref }}
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: Auto generated release
+        draft: true
+        prerelease: false
+    - name: Upload assets
+      uses: csexton/release-asset-action@v2
+      with:
+        pattern: |
+          "*_dta*.traineddata"
+          "de-dta.*"
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        release-url: ${{ steps.create_release.outputs.upload_url }}
   
