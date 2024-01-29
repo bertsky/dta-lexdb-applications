@@ -16,6 +16,9 @@ get-tess: $(TESS_MODELS:%=%.traineddata)
 
 all-tess: $(foreach MODEL, $(TESS_MODELS), $(MODEL)_dta10.traineddata $(MODEL)_dta50.traineddata $(MODEL)_dta100.traineddata)
 
+%_dta10.traineddata: dta_lexdb_10_nopunc.words
+%_dta50.traineddata: dta_lexdb_50_nopunc.words
+%_dta100.traineddata: dta_lexdb_100_nopunc.words
 %_dta10.traineddata %_dta50.traineddata %_dta100.traineddata: %.traineddata
 	cp $< $@
 	./combine_tessdata.sh $@ dta_lexdb_$(patsubst $*_dta%.traineddata,%,$@)_nopunc.words
