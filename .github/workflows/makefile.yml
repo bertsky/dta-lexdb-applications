@@ -1,0 +1,33 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: make install
+
+    - name: Create Tesseract models
+      run: make all-tess
+      
+    - name: Create Hunspell dict
+      run: make all-hunspell
+      
+    - uses: maxmilton/action-create-release@v0
+        with:
+          files: |
+            *_dta*.traineddata
+            de-dta.*
+          git-tag: ${{ github.ref }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+  
