@@ -81,8 +81,9 @@ jobs:
         body: Auto generated release
         draft: true
         prerelease: false
+
     - name: Upload assets
-      uses: csexton/release-asset-action@v2
+      uses: csexton/release-asset-action@master
       with:
         pattern: "{*_dta*.traineddata,de-dta.*}"
         github-token: ${{ secrets.GITHUB_TOKEN }}
