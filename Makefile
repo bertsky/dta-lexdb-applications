@@ -5,7 +5,7 @@
 all: all-tess all-hunspell
 
 install:
-	sudo apt-get install sqlite3 wget
+	sudo apt-get install sqlite3 wget icu-devtools
 	sudo add-apt-repository -u -y ppa:alex-p/tesseract-ocr
 	sudo apt-get update
 	sudo apt-get install tesseract-ocr
