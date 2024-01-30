@@ -2,13 +2,13 @@
 .SECONDARY:
 .DELETE_ON_ERROR:
 
+all: all-tess all-hunspell
+
 install:
 	sudo apt-get install sqlite3 wget
 	sudo add-apt-repository -u -y ppa:alex-p/tesseract-ocr
 	sudo apt-get update
 	sudo apt-get install tesseract-ocr
-
-all: all-tess all-hunspell
 
 TESS_MODELS := frak2021 GT4HistOCR ONB Fraktur_5000000 german_print frk Fraktur
 
@@ -62,8 +62,8 @@ de-dta.dic: dta_lexdb_10.words
 	# to do: combine DTA lemmatization and contemporary affixation to a historic affixation system (instead of fixed word list)
 	grep -v -e '^[[:punct:]]' -e '^[[:digit:][:punct:]]*$$' $< | sort -u >> $@
 
-clean:
-	-$(RM) *.words *.traineddata *.sqlite *.lstm-unicharset *.lstm-word-dawg
+clean: tidy
+	-$(RM) *.words *_dta*.traineddata *.lstm-unicharset *.lstm-word-dawg
 
 tidy:
 	-$(RM)  *.lstm-unicharset *.lstm-word-dawg *.__tmp__
